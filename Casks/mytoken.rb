@@ -1,6 +1,6 @@
 cask "mytoken" do
-  version "0.6.0"
-  sha256 "a387e81e0bf2f46de21f158b274438e29cbb46105defe1504dabeed6264e1113"
+  version "0.6.1"
+  sha256 "5680e8d4c23223fd6b1468c8134fe4b6009d53c222bc0a1ddd7a75977b74eeed"
 
   url "https://github.com/nerv-base/mytoken/releases/download/v#{version}/mytoken-#{version}-darwin-universal.dmg"
   name "MyToken!!!!!"
