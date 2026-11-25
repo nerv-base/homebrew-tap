@@ -12,7 +12,9 @@ brew install --cask mytoken
 ```
 
 The cask installs **MyToken!!!!!** into *Applications* and links the `mytoken`
-command into Homebrew's `bin`.
+command into Homebrew's `bin`. If MyToken is already in *Applications* from the
+disk image, use `brew install --cask --adopt mytoken` to take over the
+identical app instead of stopping on the existing copy.
 
 ## Upgrade
 
