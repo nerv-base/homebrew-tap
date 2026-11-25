@@ -1,0 +1,47 @@
+# MyToken!!!!! Homebrew Tap
+
+Homebrew cask for [MyToken!!!!!](https://github.com/nerv-base/mytoken), a local,
+read-only spend and plan-quota dashboard for AI coding tools.
+
+## Install
+
+```sh
+brew tap nerv-base/tap
+brew trust --cask nerv-base/tap/mytoken
+brew install --cask mytoken
+```
+
+The cask installs **MyToken!!!!!** into *Applications* and links the `mytoken`
+command into Homebrew's `bin`.
+
+## Upgrade
+
+```sh
+brew upgrade --cask mytoken
+```
+
+The app also checks for updates itself.
+
+## Uninstall
+
+```sh
+brew uninstall --cask mytoken
+```
+
+Add `--zap` to also remove the local index, preferences and caches. The index
+lives in `~/Library/Application Support/MyToken`; deleting it discards the
+dashboard's local history.
+
+## Maintenance
+
+The cask is updated from the latest stable GitHub release every day by
+[.github/workflows/update-cask.yml](.github/workflows/update-cask.yml). To do it
+by hand:
+
+```sh
+./scripts/update-cask           # latest release
+./scripts/update-cask v0.6.0    # a specific tag
+```
+
+The script reads the release asset's GitHub digest and rewrites the version and
+SHA-256 in `Casks/mytoken.rb`. Review the diff before committing.

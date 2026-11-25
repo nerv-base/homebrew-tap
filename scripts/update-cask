@@ -1,0 +1,43 @@
+#!/bin/sh
+# Rewrite Casks/mytoken.rb from a MyToken release (default: latest stable).
+set -eu
+
+repo=nerv-base/mytoken
+cask=Casks/mytoken.rb
+tag=${1:-$(gh release view --repo "$repo" --json tagName --jq .tagName)}
+version=${tag#v}
+asset="mytoken-${version}-darwin-universal.dmg"
+
+case "$version" in
+  ''|*[!0-9A-Za-z.-]*)
+    echo "invalid release tag: $tag" >&2
+    exit 1
+    ;;
+esac
+
+digest=$(gh api "repos/$repo/releases/tags/$tag" \
+  --jq ".assets[] | select(.name == \"$asset\") | .digest")
+sha=${digest#sha256:}
+case "$sha" in
+  ''|*[!0-9a-f]*)
+    echo "cannot read sha256 for $asset (digest: $digest)" >&2
+    exit 1
+    ;;
+esac
+if [ "${#sha}" -ne 64 ]; then
+  echo "bad sha256 length for $asset: $sha" >&2
+  exit 1
+fi
+
+VERSION=$version SHA=$sha perl -0pi -e '
+  s/^  version ".*"$/  version "$ENV{VERSION}"/m;
+  s/^  sha256 "[0-9a-f]{64}"$/  sha256 "$ENV{SHA}"/m;
+' "$cask"
+
+if ! grep -q "^  version \"$version\"$" "$cask" ||
+   ! grep -q "^  sha256 \"$sha\"$" "$cask"; then
+  echo "failed to update $cask" >&2
+  exit 1
+fi
+
+echo "mytoken $version ($sha)"
